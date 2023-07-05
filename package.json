@@ -1,0 +1,14 @@
+{
+  "name": "qubika",
+  "version": "1.0.0",
+  "description": "qubika challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "JMP",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^12.16.0"
+  }
+}
