@@ -1,46 +1,42 @@
+import BasePage from "./POM/BasePage.js"
+import AustinOfficePage from "./POM/AustinOfficePage.js"
 
+describe('visiting base URL', () => {
 
-describe('visiting base url', () => {
-    
-    beforeEach(() => {
-        //Visit base URL
-        cy.visit('https://inhouse.decemberlabs.com/')
+  const basePage = new BasePage('.logo-wrapper', '#menu-header-main-menu', '.offices_section')
+  const austinOfficePage = new AustinOfficePage('.offices_section', 'Austin', '.buttons', '.dl-modal-content', '.calendar-modal > .dl-modal-content > .btn-close-modal')
 
-        //Hide requests
-        cy.intercept({ resourceType: /xhr|fetch/}, {log: false})
+  before(() => {
 
-        //Validating title
-        cy.get('.logo-wrapper').should('be.visible')
+    //Visiting home URL
+    basePage.visit()
+  })
 
-        //Validating header main menu
-        cy.get('#menu-header-main-menu').should('be.visible')
-    });
-    it('Navigate to Austin office site', () => {
-        
-        cy.get('.offices_section').within(() => {
-            cy.get('a[href*="/locations/austin"]').click()
-        })
-        //Validating URL
-        cy.url().should('include', '/locations/austin/')
+  it.only('Decemberlabs home and Austin office page', () => {
 
-        //Validating Title
-        cy.get('h1').contains('Austin').should('be.visible')
+      //Validating Home title, logo and main menu
+      basePage.validateTitle()
+      basePage.validateLogo()
+      basePage.validateMainMenu()
 
-        //Scheduling a free consultation
-        cy.get('.buttons').contains('Schedule free consultation').click().then($iframe => {
-                    
-            //Validating pop-up
-            cy.get('.dl-modal-content').should('be.visible')
+      //Going to Austin Office page
+      basePage.navigateToAustinOffice()
 
-            //Close popup
-            cy.wait(1200)
-            cy.get('.calendar-modal > .dl-modal-content > .btn-close-modal').click()
+      //Validating Austin Office Title & URL
+      austinOfficePage.validateTitle()
+      austinOfficePage.validateUrl()
 
-            //Validating that pop-up isn't visible
-            cy.get('.dl-modal-content').should('be.not.visible')      
+      //Clicking on "Schedulle a free Consultation"
+      austinOfficePage.scheduleConsultation().then(() => {
 
-        })        
-    });
+        //Validating that the Popup is visible
+        austinOfficePage.validatePopupVisible()
 
-});
+        //Closing the Popup
+        austinOfficePage.closePopup()
 
+        //Validating that the Popup've been closed
+        austinOfficePage.validatePopupNotVisible()
+      })
+    })
+})
