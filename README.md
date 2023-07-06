@@ -32,7 +32,7 @@ To run the tests, use one of the following commands:
 
 - Run tests using the Cypress Test Runner (interactive mode):
 
-    1. Run the following command: /node_modules/.bin/cypress open
+    1. Run the following command: ./node_modules/.bin/cypress open
 
     2. Select "E2E Testing"
 
